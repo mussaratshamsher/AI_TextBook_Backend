@@ -1,0 +1,10 @@
+
+markdown
+tqdm
+fastapi
+uvicorn
+qdrant-client
+sentence-transformers
+python-dotenv
+google-generativeai
+
