@@ -1,9 +1,8 @@
 fastapi
-uvicorn[standard]
-httpx
+uvicorn
 python-dotenv
 pydantic
+groq
+httpx
 google-generativeai
-numpy
-huggingface-hub
-grpcio
+qdrant-client==1.15.0
