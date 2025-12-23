@@ -11,10 +11,10 @@ from dotenv import load_dotenv
 # -----------------------------
 load_dotenv()
 
-QDRANT_URL = os.getenv("QDRANT_CLUSTER_URL1")
-QDRANT_API_KEY = os.getenv("QDRANT_API_KEY1")
+QDRANT_URL = os.getenv("QDRANT_CLUSTER_URL")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-GEMINI_API_KEY = os.getenv("gemini_embed_key")  # Required for embedding queries
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")  # Required for embedding queries
 
 COLLECTION_NAME = "embeding-physical-ai"
 app = FastAPI(title="Book RAG Agent")
@@ -23,7 +23,15 @@ app = FastAPI(title="Book RAG Agent")
 # Initialize Clients
 # -----------------------------
 client_qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
-client_groq = Groq(api_key=GROQ_API_KEY)
+client_groq = None
+if GROQ_API_KEY:
+    client_groq = Groq(api_key=GROQ_API_KEY)
+if not client_groq:
+    raise HTTPException(
+        status_code=500,
+        detail="Groq API key not configured"
+    )
+
 genai.configure(api_key=GEMINI_API_KEY)
 
 # -----------------------------
@@ -118,4 +126,5 @@ def read_root():
 # -----------------------------
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

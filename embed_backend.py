@@ -10,9 +10,9 @@ from qdrant_client.models import VectorParams, Distance, PointStruct
 # ---------------------------------
 load_dotenv()
 
-QDRANT_URL = os.getenv("QDRANT_CLUSTER_URL1")
-QDRANT_API_KEY = os.getenv("QDRANT_API_KEY1")
-GEMINI_API_KEY = os.getenv("gemini_embed_key")
+QDRANT_URL = os.getenv("QDRANT_CLUSTER_URL")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 BOOK_CONTENT_PATH = os.getenv("BOOK_CONTENT_PATH")
 
 COLLECTION_NAME = "embeding-physical-ai"
