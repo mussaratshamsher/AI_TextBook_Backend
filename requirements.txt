@@ -5,4 +5,4 @@ pydantic
 groq
 httpx
 google-generativeai
-qdrant-client==1.15.0
+qdrant-client==1.9.0

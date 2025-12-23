@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from groq import Groq
-from google import genai
+import google.generativeai as genai
 from qdrant_client import QdrantClient
 from dotenv import load_dotenv
 
@@ -24,7 +24,7 @@ app = FastAPI(title="Book RAG Agent")
 # -----------------------------
 client_qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
 client_groq = Groq(api_key=GROQ_API_KEY)
-client_gemini = genai.Client(api_key=GEMINI_API_KEY)
+genai.configure(api_key=GEMINI_API_KEY)
 
 # -----------------------------
 # Pydantic Request Model
@@ -37,11 +37,12 @@ class QueryRequest(BaseModel):
 # -----------------------------
 def get_embedding(text: str):
     """Generate embedding using Gemini (must match ingestion model)."""
-    response = client_gemini.models.embed_content(
-        model="text-embedding-004",
-        contents=text
+    response = genai.embed_content(
+        model="models/text-embedding-004",
+        content=text,
+        task_type="retrieval_document",
     )
-    return response.embeddings[0].values
+    return response['embedding']
 
 # -----------------------------
 # Retrieve Context from Qdrant
